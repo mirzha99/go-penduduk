@@ -1,8 +1,6 @@
 package router
 
 import (
-	"os"
-
 	"github.com/gin-gonic/gin"
 	"github.com/mirzha99/go-penduduk/controller/auth"
 	"github.com/mirzha99/go-penduduk/controller/desa"
@@ -62,5 +60,5 @@ func Router() {
 	r.PUT("/desa/:id", middleware.ReqAuth, desa.Edit)
 	r.DELETE("/desa/:id", middleware.ReqAuth, desa.Delete)
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
-	r.Run(os.Getenv("port"))
+	r.Run(":8080")
 }
