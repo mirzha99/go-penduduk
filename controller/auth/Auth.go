@@ -24,15 +24,13 @@ type ErrorResponse struct {
 	Detail string `json:"detail"`
 }
 
-// Login godoc
-// @Summary Login pengguna
-// @Description Melakukan login pengguna dan mengembalikan token otentikasi
+// @Summary Login
+// @Tags Auth
+// @Description Login with the provided data
 // @Accept json
-// @Produce json
-
-// @Param loginInput body Muser.LoginInput true "User login credentials"
-// @Success 200 {object} SuccessResponse "Sukses"
-
+// @Param user body Muser.LoginInput true "User information"
+// @Success 201 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
 // @Router /login [post]
 func Login(ctx *gin.Context) {
 	var loginInput Muser.LoginInput
@@ -66,12 +64,21 @@ func Login(ctx *gin.Context) {
 	//json
 	ctx.SetSameSite(http.SameSiteLaxMode)
 	ctx.SetCookie("jwt-token", tokenResult, 3600*24*30, "", "", false, true)
+
 	ctx.JSON(200, SuccessResponse{
 		Message: "Welcome " + user.Nama,
 		Token:   tokenResult,
 	})
 
 }
+
+// @Summary Profil User Login
+// @Tags Auth
+// @Description Login with the provided data
+// @Accept json
+// @Success 201 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Router /profil [get]
 func Profil(ctx *gin.Context) {
 	profil, err := ctx.Get("user")
 

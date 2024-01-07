@@ -5,12 +5,12 @@ import (
 	"github.com/mirzha99/go-penduduk/router"
 )
 
-// @title 	Tag Service API
+// @title Go Penduduk
 // @version	1.0
-// @description A Tag service API in Go using Gin framework
+// @description A Go Penduduk in Go using Gin framework
 
-// @host 	localhost:8888
-// @BasePath /api
+// @host 	localhost:8080
+// @BasePath /
 func main() {
 	//call .env
 	config.Loadenv()

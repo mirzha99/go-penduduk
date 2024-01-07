@@ -16,27 +16,6 @@ import (
 func Router() {
 	r := gin.Default()
 
-	r.Use(func(c *gin.Context) {
-		c.Header("Access-Control-Allow-Origin", "*")
-		c.Header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-		c.Header("Access-Control-Allow-Headers", "Origin, Content-Type, Content-Length, Accept-Encoding, Authorization")
-		if c.Request.Method == "OPTIONS" {
-			c.AbortWithStatus(200)
-			return
-		}
-		c.Next()
-	})
-	// @BasePath /api/v1
-
-	// Home godoc
-	// @Summary ping example
-	// @Schemes
-	// @Description do ping
-	// @Tags example
-	// @Accept json
-	// @Produce json
-	// @Success 200 {string} Helloworld
-	// @Router /example/helloworld [get]
 	r.GET("/", home.Index)
 	//auth
 	r.POST("/login", auth.Login)

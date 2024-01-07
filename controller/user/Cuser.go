@@ -11,6 +11,18 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
+// SuccessResponse adalah struktur respons sukses
+type SuccessResponse struct {
+	Message string `json:"message"`
+	Token   string `json:"token"`
+}
+
+// ErrorResponse adalah struktur respons kesalahan
+type ErrorResponse struct {
+	Error  string `json:"error"`
+	Detail string `json:"detail"`
+}
+
 func Index(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})
@@ -63,6 +75,15 @@ func username_already_exits(username string) bool {
 	}
 	return true
 }
+
+// @Summary Register a new user
+// @Tags Auth
+// @Description Create a new user with the provided data
+// @Accept json
+// @Param user body Muser.User true "User information"
+// @Success 201 {object} SuccessResponse
+// @Failure 400 {object} ErrorResponse
+// @Router /register [post]
 func Add(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})

@@ -1,12 +1,129 @@
-basePath: /api
-host: localhost:8888
+basePath: /
+definitions:
+  Muser.LoginInput:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  Muser.User:
+    properties:
+      change_at:
+        type: string
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: integer
+      nama:
+        type: string
+      password:
+        type: string
+      role:
+        type: string
+      username:
+        type: string
+    type: object
+  auth.ErrorResponse:
+    properties:
+      detail:
+        type: string
+      error:
+        type: string
+    type: object
+  auth.SuccessResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+  user.ErrorResponse:
+    properties:
+      detail:
+        type: string
+      error:
+        type: string
+    type: object
+  user.SuccessResponse:
+    properties:
+      message:
+        type: string
+      token:
+        type: string
+    type: object
+host: localhost:8080
 info:
   contact: {}
-  description: A Tag service API in Go using Gin framework
-  title: Tag Service API
+  description: A Go Penduduk in Go using Gin framework
+  title: Go Penduduk
   version: "1.0"
 paths:
   /login:
     post:
-      responses: {}
+      consumes:
+      - application/json
+      description: Login with the provided data
+      parameters:
+      - description: User information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Muser.LoginInput'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auth.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Login
+      tags:
+      - Auth
+  /profil:
+    get:
+      consumes:
+      - application/json
+      description: Login with the provided data
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/auth.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/auth.ErrorResponse'
+      summary: Profil User Login
+      tags:
+      - Auth
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Create a new user with the provided data
+      parameters:
+      - description: User information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Muser.User'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/user.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/user.ErrorResponse'
+      summary: Register a new user
+      tags:
+      - Auth
 swagger: "2.0"
