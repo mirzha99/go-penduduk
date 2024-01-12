@@ -9,7 +9,7 @@ import (
 // @version	1.0
 // @description A Go Penduduk in Go using Gin framework
 
-// @host 	localhost:8080
+// @host 	localhost:3131
 // @BasePath /
 func main() {
 	//call .env

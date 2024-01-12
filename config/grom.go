@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	Mkepalakularga "github.com/mirzha99/go-penduduk/models/MKepalaKularga"
 	"github.com/mirzha99/go-penduduk/models/Mdesa"
 	"github.com/mirzha99/go-penduduk/models/Mmukim"
 	"github.com/mirzha99/go-penduduk/models/Muser"
@@ -26,6 +27,6 @@ func ConnectionDB() {
 	if err != nil {
 		panic(err)
 	}
-	db.AutoMigrate(&Muser.User{}, &Mmukim.Mukim{}, &Mdesa.Desa{})
+	db.AutoMigrate(&Muser.User{}, &Mmukim.Mukim{}, &Mdesa.Desa{}, &Mkepalakularga.KepalaKeluarga{})
 	DB = db
 }

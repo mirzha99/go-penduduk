@@ -9,6 +9,14 @@ import (
 	"github.com/mirzha99/go-penduduk/models/Mmukim"
 )
 
+// @Summary Get All Mukim
+// @Tags Mukim
+// @Description Get All Mukim
+// @Security ApiKeyAuth
+// @Accept json
+// @Success 201 {object} helper.SuccessResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Router /mukims [get]
 func Index(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})
@@ -24,6 +32,16 @@ func Index(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, gin.H{"mukim": mukim})
 }
+
+// @Summary Get Mukim by Id
+// @Tags Mukim
+// @Description Get Mukim by Id
+// @Security ApiKeyAuth
+// @Accept json
+// @Param id path int true "User ID"
+// @Success 201 {object} helper.SuccessResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Router /mukim/{id} [get]
 func GetById(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})
@@ -48,6 +66,16 @@ func mukim_already_exits(nama_mukim string) bool {
 	}
 	return true
 }
+
+// @Summary Mukim Edit Add
+// @Tags Mukim
+// @Description Mukim Edit Add
+// @Security ApiKeyAuth
+// @Accept json
+// @Param user body Mmukim.Mukim true "User information"
+// @Success 201 {object} helper.SuccessResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Router /mukim/ [post]
 func Add(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})
@@ -72,6 +100,16 @@ func Add(ctx *gin.Context) {
 
 }
 
+// @Summary Mukim Edit by Id
+// @Tags Mukim
+// @Description Mukim Edit by Id
+// @Security ApiKeyAuth
+// @Accept json
+// @Param id path int true "User ID"
+// @Param user body Mmukim.Mukim true "User information"
+// @Success 201 {object} helper.SuccessResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Router /mukim/{id} [put]
 func Edit(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})
@@ -99,6 +137,16 @@ func Edit(ctx *gin.Context) {
 	}
 	ctx.JSON(200, gin.H{"message": "User Successly Update", "user": mukim})
 }
+
+// @Summary Mukim Edit by Id
+// @Tags Mukim
+// @Description Mukim Edit by Id
+// @Security ApiKeyAuth
+// @Accept json
+// @Param id path int true "User ID"
+// @Success 201 {object} helper.SuccessResponse
+// @Failure 400 {object} helper.ErrorResponse
+// @Router /mukim/{id} [delete]
 func Delete(ctx *gin.Context) {
 	if !config.Limiter.Allow() {
 		ctx.JSON(http.StatusTooManyRequests, gin.H{"error": "Too many requests"})

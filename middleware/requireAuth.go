@@ -4,12 +4,14 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/mirzha99/go-penduduk/config"
 	"github.com/mirzha99/go-penduduk/models/Muser"
+	"github.com/mirzha99/timegoza/timegoza"
 )
 
 func ReqAuth(ctx *gin.Context) {
@@ -48,6 +50,12 @@ func ReqAuth(ctx *gin.Context) {
 			ctx.AbortWithStatus(http.StatusUnauthorized)
 			return
 		}
+		created_at, _ := strconv.Atoi(user.Created_at)
+		change_at, _ := strconv.Atoi(user.Change_at)
+		created := timegoza.ZaTimes{Epoch: int64(created_at), TimeZone: "Asia/Jakarta"}
+		change := timegoza.ZaTimes{Epoch: int64(change_at), TimeZone: "Asia/Jakarta"}
+		user.Created_at = created.HumanTime()
+		user.Change_at = change.HumanTime()
 		//attach to req
 		ctx.Set("user", user.PublicUser())
 		//countinue
@@ -55,5 +63,4 @@ func ReqAuth(ctx *gin.Context) {
 	} else {
 		ctx.AbortWithStatus(http.StatusUnauthorized)
 	}
-
 }

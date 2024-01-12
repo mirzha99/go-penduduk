@@ -1,5 +1,14 @@
 basePath: /
 definitions:
+  Mmukim.Mukim:
+    properties:
+      id:
+        type: integer
+      nama:
+        type: string
+      nama_imum_mukim:
+        type: string
+    type: object
   Muser.LoginInput:
     properties:
       password:
@@ -7,60 +16,71 @@ definitions:
       username:
         type: string
     type: object
-  Muser.User:
+  Muser.UserInput:
     properties:
-      change_at:
-        type: string
-      created_at:
-        type: string
       email:
         type: string
-      id:
-        type: integer
       nama:
         type: string
       password:
         type: string
-      role:
-        type: string
       username:
         type: string
     type: object
-  auth.ErrorResponse:
+  helper.ErrorResponse:
     properties:
       detail:
         type: string
       error:
         type: string
+      statuscode:
+        type: integer
     type: object
-  auth.SuccessResponse:
+  helper.SuccessResponse:
     properties:
       message:
         type: string
+      result: {}
+      statuscode:
+        type: integer
       token:
         type: string
     type: object
-  user.ErrorResponse:
-    properties:
-      detail:
-        type: string
-      error:
-        type: string
-    type: object
-  user.SuccessResponse:
-    properties:
-      message:
-        type: string
-      token:
-        type: string
-    type: object
-host: localhost:8080
+host: localhost:3131
 info:
   contact: {}
   description: A Go Penduduk in Go using Gin framework
   title: Go Penduduk
   version: "1.0"
 paths:
+  /kepalakeluarga:
+    get:
+      consumes:
+      - application/json
+      description: Get All Data Kepala Keluarga
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Data Kepala Keluarga
+      tags:
+      - Kepala Keluarga
+  /kepalakeluarga/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get All Data Kepala Keluarga
+      parameters:
+      - description: Kelapa Keluarga id
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses: {}
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Data Kepala Keluarga
+      tags:
+      - Kepala Keluarga
   /login:
     post:
       consumes:
@@ -77,14 +97,149 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/auth.SuccessResponse'
+            $ref: '#/definitions/helper.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth.ErrorResponse'
+            $ref: '#/definitions/helper.ErrorResponse'
       summary: Login
       tags:
       - Auth
+  /logout:
+    get:
+      consumes:
+      - application/json
+      description: Logout user
+      responses:
+        "200":
+          description: OK
+      summary: Logout
+      tags:
+      - Auth
+  /mukim/:
+    post:
+      consumes:
+      - application/json
+      description: Mukim Edit Add
+      parameters:
+      - description: User information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Mmukim.Mukim'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Mukim Edit Add
+      tags:
+      - Mukim
+  /mukim/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Mukim Edit by Id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Mukim Edit by Id
+      tags:
+      - Mukim
+    get:
+      consumes:
+      - application/json
+      description: Get Mukim by Id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get Mukim by Id
+      tags:
+      - Mukim
+    put:
+      consumes:
+      - application/json
+      description: Mukim Edit by Id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Mmukim.Mukim'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Mukim Edit by Id
+      tags:
+      - Mukim
+  /mukims:
+    get:
+      consumes:
+      - application/json
+      description: Get All Mukim
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get All Mukim
+      tags:
+      - Mukim
   /profil:
     get:
       consumes:
@@ -94,11 +249,13 @@ paths:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/auth.SuccessResponse'
+            $ref: '#/definitions/helper.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth.ErrorResponse'
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Profil User Login
       tags:
       - Auth
@@ -106,24 +263,124 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create a new user with the provided data
+      description: Create a new user with register
       parameters:
       - description: User information
         in: body
         name: user
         required: true
         schema:
-          $ref: '#/definitions/Muser.User'
+          $ref: '#/definitions/Muser.UserInput'
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/user.SuccessResponse'
+            $ref: '#/definitions/helper.SuccessResponse'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/user.ErrorResponse'
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Register a new user
       tags:
       - Auth
+  /user/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete Data User by Id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete user
+      tags:
+      - User
+    get:
+      consumes:
+      - application/json
+      description: Data User By Id
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Get user by id
+      tags:
+      - User
+    put:
+      consumes:
+      - application/json
+      description: Edit Data User
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: User information
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/Muser.UserInput'
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Edit user
+      tags:
+      - User
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Show All Data User
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helper.SuccessResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helper.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: User List
+      tags:
+      - User
 swagger: "2.0"

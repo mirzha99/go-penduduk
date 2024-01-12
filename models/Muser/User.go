@@ -12,6 +12,12 @@ type User struct {
 	Created_at string `gorm:"type:varchar(30);column:created_at" json:"created_at"`
 	Change_at  string `gorm:"type:varchar(30);column:change_at" json:"change_at"`
 }
+type UserInput struct {
+	Nama     string `gorm:"type:varchar(30);column:nama" json:"nama"`
+	Email    string `gorm:"type:varchar(30);column:email" json:"email"`
+	Username string `gorm:"type:varchar(30);column:username" json:"username"`
+	Password string `gorm:"type:varchar(60);column:password" json:"password"`
+}
 type LoginInput struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
