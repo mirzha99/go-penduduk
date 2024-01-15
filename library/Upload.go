@@ -5,6 +5,7 @@ import (
 	"io"
 	"net/http"
 	"os"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 	"github.com/mirzha99/go-penduduk/helper"
@@ -19,9 +20,13 @@ func UploadFiles(ctx *gin.Context, namefile string, path string) (int, any) {
 	}
 	defer file.Close()
 
-	// Pastikan untuk mengganti "uploads" dengan direktori tempat Anda ingin menyimpan file.
+	// Pastikan untuk variabel path dengan direktori tempat Anda ingin menyimpan file.
 	// Di sini, kita menyimpan file di direktori yang sama dengan aplikasi.
-	filePath := path + helper.Itoa(int(timegoza.EpochTime())) + "-" + header.Filename
+	//replace all space
+	namefiles := header.Filename
+	namefiles = strings.ReplaceAll(namefiles, " ", "_")
+	//name file
+	filePath := path + helper.Itoa(int(timegoza.EpochTime())) + "-" + namefiles
 	out, err := os.Create(filePath)
 	if err != nil {
 		e := fmt.Sprintf("Error while creating the file: %s", err.Error())
@@ -34,5 +39,16 @@ func UploadFiles(ctx *gin.Context, namefile string, path string) (int, any) {
 		e := fmt.Sprintf("Error while copying the file: %s", err.Error())
 		return http.StatusInternalServerError, e
 	}
-	return http.StatusCreated, helper.Itoa(int(timegoza.EpochTime())) + "-" + header.Filename
+
+	//return name file
+	return http.StatusCreated, helper.Itoa(int(timegoza.EpochTime())) + "-" + namefiles
+}
+func RemoveFile(namefile string, path string) {
+	filePath := fmt.Sprintf("%v/%v", path, namefile)
+	// Hapus file
+	err := os.Remove(filePath)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
 }

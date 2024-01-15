@@ -40,7 +40,6 @@ func (e *ErrorResponse) ErrorResult() any {
 func (e *ErrorResponse) ErrorResultDetail() any {
 	return map[string]any{
 		"statuscode": e.StatusCode,
-		"err":        e.Error,
 		"detail":     e.Detail,
 	}
 }

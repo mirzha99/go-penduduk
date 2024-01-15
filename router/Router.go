@@ -19,12 +19,16 @@ import (
 
 func Router() {
 	r := gin.Default()
-	// Konfigurasi CORS
+	// Pengaturan middleware CORS
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost/" + os.Getenv("PORT")} // Ganti dengan alamat domain Anda
+	config.AllowOrigins = []string{"http://localhost:5173"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	config.AllowCredentials = true
+	config.AllowHeaders = []string{"Content-Type", "Authorization"} // Tambahkan header yang dibutuhkan
 	r.Use(cors.New(config))
 
 	// Menentukan endpoint untuk file statis
+
 	r.Static("/datapenduduk", "./uploads/datapenduduk")
 
 	r.GET("/", home.Index)
@@ -44,7 +48,7 @@ func Router() {
 	//mukim
 	r.GET("/mukims", middleware.ReqAuth, mukim.Index)
 	r.GET("/mukim/:id", middleware.ReqAuth, mukim.GetById)
-	r.POST("/mukim/", middleware.ReqAuth, mukim.Add)
+	r.POST("/mukim/", mukim.Add)
 	r.PUT("/mukim/:id", middleware.ReqAuth, mukim.Edit)
 	r.DELETE("/mukim/:id", middleware.ReqAuth, mukim.Delete)
 
@@ -56,9 +60,11 @@ func Router() {
 	r.DELETE("/desa/:id", middleware.ReqAuth, desa.Delete)
 
 	//data kepala keluarga
-	r.GET("/kepalakeluarga", datakk.Index)
-	r.GET("/kepalakeluarga/:id", datakk.ById)
-	r.POST("/kepalakeluarga", datakk.Add)
+	r.GET("/kepalakeluarga", middleware.ReqAuth, datakk.Index)
+	r.GET("/kepalakeluarga/:id", middleware.ReqAuth, datakk.ById)
+	r.POST("/kepalakeluarga", middleware.ReqAuth, datakk.Add)
+	r.PUT("/kepalakeluarga/:id", middleware.ReqAuth, datakk.Edit)
+	r.DELETE("/kepalakeluarga/:id", middleware.ReqAuth, datakk.Delete)
 
 	//swagger index
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerfiles.Handler))
